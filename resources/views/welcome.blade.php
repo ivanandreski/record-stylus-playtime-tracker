@@ -20,6 +20,7 @@
             }
         </style>
             <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
+            {{-- https://api.discogs.com/users/anzurakizz/collection/folders/0/releases?sort=artist&per_page=100&page=1 --}}
     </head>
     <body class="antialiased">
         <div x-data="{ show: false }">
