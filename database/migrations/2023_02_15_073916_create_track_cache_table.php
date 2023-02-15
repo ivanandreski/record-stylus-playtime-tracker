@@ -18,7 +18,6 @@ class CreateTrackCacheTable extends Migration
             $table->timestamps();
             $table->string('position');
             $table->string('name');
-            $table->string('discogs_id');
             $table->integer('duration_seconds');
             $table->bigInteger('album_cache_id');
             $table->foreign('album_cache_id')

@@ -2,12 +2,25 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\AlbumCache;
 use Livewire\Component;
 
 class CollectionView extends Component
 {
+    public $search = "";
+
+    // public function
+
     public function render()
     {
-        return view('livewire.collection-view')->layout('layouts.app');
+        $albums = [];
+        if (!(strlen($this->search) == 0)){
+            $albums = AlbumCache::where('name', 'like', '%'.$this->search.'%')->get();
+        }
+
+        return view('livewire.collection-view', [
+            'albums' => $albums,
+        ])
+        ->layout('layouts.app');
     }
 }

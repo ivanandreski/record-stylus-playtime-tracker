@@ -22,6 +22,7 @@ class CreateAlbumCacheTable extends Migration
             $table->string('artist_name');
             $table->integer('release_year');
             $table->integer('duration_seconds');
+            $table->boolean('in_collection');
         });
     }
 
