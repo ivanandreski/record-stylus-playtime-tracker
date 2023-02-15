@@ -16,10 +16,12 @@ class CreatePlaySessionTracksTable extends Migration
         Schema::create('play_session_tracks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->bigInteger('play_session_id');
             $table->foreign('play_session_id')
                 ->references('id')
                 ->on('play_session')
                 ->onCascade('delete');
+            $table->bigInteger('track_cache_id');
             $table->foreign('track_cache_id')
                 ->references('id')
                 ->on('track_cache')
