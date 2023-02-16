@@ -7,7 +7,7 @@ use App\Models\TrackCache;
 
 class AlbumCacheRepository implements AlbumCacheRepositoryInterface
 {
-    public function getExistingDiscordIds(): array
+    public function getExistingDiscogsIds(): array
     {
         return AlbumCache::select('albums_cache.discogs_id')
             ->get()

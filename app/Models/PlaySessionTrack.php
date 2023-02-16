@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PlaySessionTracks extends Model
+class PlaySessionTrack extends Model
 {
     use HasFactory;
 
@@ -13,11 +13,11 @@ class PlaySessionTracks extends Model
 
     public function track()
     {
-        return $this->belongsTo(TrackCache::class, 'track_cache_id', 'owner_key');
+        return $this->belongsTo(TrackCache::class, 'track_cache_id');
     }
 
     public function playSession()
     {
-        return $this->belongsTo(PlaySession::class, 'play_session_id', 'owner_key');
+        return $this->belongsTo(PlaySession::class, 'play_session_id');
     }
 }

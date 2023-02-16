@@ -1,12 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-      "./resources/**/*.blade.php",
-      "./resources/**/*.js",
-      "./resources/**/*.vue",
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
     ],
     theme: {
-      extend: {},
+        extend: {},
+        screens: {
+            xxs: { min: "1px", max: "640px" }, // min-width
+        },
     },
     plugins: [],
-  }
+};

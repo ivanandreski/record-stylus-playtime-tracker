@@ -53,18 +53,17 @@ class DiscogsRemoteDataSource implements DiscogsRemoteDataSourceInterface
 
     public function parseJsonCollectionAndUpdateCache(array $jsonPages = [])
     {
-        $existingDiscogsIds = $this->albumCacheRepository->getExistingDiscordIds();
+        $existingDiscogsIds = $this->albumCacheRepository->getExistingDiscogsIds();
         $remoteDiscogsIds = [];
 
         foreach ($jsonPages as $jsonPage) {
             $decodedPage = json_decode($jsonPage);
 
             foreach ($decodedPage->releases as $release) {
+                $remoteDiscogsIds[] = $release->id;
                 if (in_array($release->id, $existingDiscogsIds)) {
                     continue;
                 }
-
-                $remoteDiscogsIds[] = $release->id;
 
                 $albumCache = new AlbumCache();
                 $albumCache->discogs_id = $release->id;
@@ -79,7 +78,8 @@ class DiscogsRemoteDataSource implements DiscogsRemoteDataSourceInterface
             }
         }
 
-        $this->albumCacheRepository->deleteAllNonExistingAlbums($existingDiscogsIds, $remoteDiscogsIds);
+        if (count($jsonPages) > 0)
+            $this->albumCacheRepository->deleteAllNonExistingAlbums($existingDiscogsIds, $remoteDiscogsIds);
     }
 
     public function updateTracksForAlbum(AlbumCache $album)

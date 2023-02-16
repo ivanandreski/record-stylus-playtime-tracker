@@ -13,11 +13,11 @@ class PlaySession extends Model
 
     public function playSessionTracks()
     {
-        return $this->hasMany(PlaySessionTracks::class);
+        return $this->hasMany(PlaySessionTrack::class);
     }
 
     public function stylus()
     {
-        return $this->belongsTo(Stylus::class, 'stylus_id', 'owner_key');
+        return $this->belongsTo(Stylus::class, 'stylus_id');
     }
 }

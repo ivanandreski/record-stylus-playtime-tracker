@@ -16,6 +16,7 @@ class CreatePlaySessionTable extends Migration
         Schema::create('play_sessions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->integer('playtime_seconds');
             $table->bigInteger('stylus_id');
             $table->foreign('stylus_id')
                 ->references('id')

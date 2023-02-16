@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 interface AlbumCacheRepositoryInterface {
-    public function getExistingDiscordIds(): array;
+    public function getExistingDiscogsIds(): array;
 
     public function deleteAllNonExistingAlbums($existingDiscogsIds, $remoteDiscogsIds): void;
 

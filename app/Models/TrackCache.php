@@ -13,7 +13,7 @@ class TrackCache extends Model
 
     public function album()
     {
-        return $this->belongsTo(AlbumCache::class, 'album_cache_id', 'owner_key');
+        return $this->belongsTo(AlbumCache::class, 'album_cache_id');
     }
 
     public function playSessionTracks()
