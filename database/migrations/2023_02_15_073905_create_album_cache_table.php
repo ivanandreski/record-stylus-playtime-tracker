@@ -16,8 +16,9 @@ class CreateAlbumCacheTable extends Migration
         Schema::create('albums_cache', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('discogs_id')->unique();
-            $table->string('discogs_resource_url')->unique();
+            $table->string('discogs_id');
+            $table->string('discogs_resource_url');
+            $table->string('image_url');
             $table->string('title');
             $table->string('artist_name');
             $table->integer('release_year');

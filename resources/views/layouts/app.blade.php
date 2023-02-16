@@ -23,6 +23,8 @@
                         Collection</x-nav-bar-link>
                     <x-nav-bar-link :href="route('play-sessions-view')"
                         :active="request()->routeIs('play-sessions-view')">Play Sessions</x-nav-bar-link>
+                    <x-nav-bar-link :href="route('stylus-view')" :active="request()->routeIs('stylus-view')">Styluses
+                    </x-nav-bar-link>
                 </ul>
             </div>
         </div>

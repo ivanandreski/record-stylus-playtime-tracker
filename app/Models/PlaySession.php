@@ -9,10 +9,15 @@ class PlaySession extends Model
 {
     use HasFactory;
 
-    protected $table = 'play_session';
+    protected $table = 'play_sessions';
 
     public function playSessionTracks()
     {
         return $this->hasMany(PlaySessionTracks::class);
+    }
+
+    public function stylus()
+    {
+        return $this->belongsTo(Stylus::class, 'stylus_id', 'owner_key');
     }
 }

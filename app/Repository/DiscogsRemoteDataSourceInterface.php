@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Models\AlbumCache;
+
 interface DiscogsRemoteDataSourceInterface {
-    // TODO: add dependency injection
     public function getCollectionJson();
 
     public function parseJsonCollectionAndUpdateCache(array $jsonPages = []);
+
+    public function updateTracksForAlbum(AlbumCache $album);
 }

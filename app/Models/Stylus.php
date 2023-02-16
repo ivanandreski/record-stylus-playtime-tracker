@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AlbumCache extends Model
+class Stylus extends Model
 {
     use HasFactory;
 
-    protected $table = 'albums_cache';
+    protected $table = 'styluses';
 
-    public function tracks()
+    public function playSessions()
     {
-        return $this->hasMany(TrackCache::class);
+        return $this->hasMany(PlaySession::class);
     }
 }

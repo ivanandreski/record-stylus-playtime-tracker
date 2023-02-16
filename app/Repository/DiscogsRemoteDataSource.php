@@ -14,7 +14,9 @@ class DiscogsRemoteDataSource implements DiscogsRemoteDataSourceInterface
     private $finalUrl;
     private $t;
 
-    public function __construct()
+    private AlbumCacheRepositoryInterface $albumCacheRepository;
+
+    public function __construct(AlbumCacheRepositoryInterface $albumCacheRepository)
     {
         $this->t = "CnBHsGrEzRxVKNRVUtvhOZtsfcbHZyBzDhYCbXbm";
         $this->discogsApiUrl = "https://api.discogs.com/";
@@ -27,6 +29,8 @@ class DiscogsRemoteDataSource implements DiscogsRemoteDataSourceInterface
             . "&sort=artist"
             . "&per_page=100"
             . "&token=" . $this->t;
+
+        $this->albumCacheRepository = $albumCacheRepository;
     }
 
     public function getCollectionJson()
@@ -39,58 +43,61 @@ class DiscogsRemoteDataSource implements DiscogsRemoteDataSourceInterface
             if ($response->status() == 404)
                 break;
 
-            $pages[] = $response->json();
+            $pages[] = $response->body();
 
             $page++;
         }
+
+        return $pages;
     }
 
     public function parseJsonCollectionAndUpdateCache(array $jsonPages = [])
     {
-        $existingDiscogsIds = AlbumCache::select('album_cache.id')->get()->toArray();
+        $existingDiscogsIds = $this->albumCacheRepository->getExistingDiscordIds();
         $remoteDiscogsIds = [];
 
-        foreach($jsonPages as $jsonPage) {
+        foreach ($jsonPages as $jsonPage) {
             $decodedPage = json_decode($jsonPage);
 
-            foreach($decodedPage->releases as $release) {
-                $remoteDiscogsIds[] = $release->id;
-
-                if(in_array($release->id, $existingDiscogsIds, true)) {
+            foreach ($decodedPage->releases as $release) {
+                if (in_array($release->id, $existingDiscogsIds)) {
                     continue;
                 }
+
+                $remoteDiscogsIds[] = $release->id;
 
                 $albumCache = new AlbumCache();
                 $albumCache->discogs_id = $release->id;
                 $albumCache->discogs_resource_url = $release->basic_information->resource_url;
+                $albumCache->image_url = $release->basic_information->cover_image;
                 $albumCache->title = $release->basic_information->title;
-                $albumCache->artist_name = $release->artists[0]->name;
+                $albumCache->artist_name = $release->basic_information->artists[0]->name;
                 $albumCache->release_year = $release->basic_information->year;
                 $albumCache->duration_seconds = 0;
                 $albumCache->in_collection = true;
                 $albumCache->save();
-
-                $resourceResponse =  Http::get($release->resource_url);
-                $resource = json_decode($resourceResponse->json());
-                foreach($resource->tracklist as $track) {
-                    $trackCache = new TrackCache();
-                    $trackCache->position = $track->position;
-                    $trackCache->name = $track->title;
-                    $durationSplit = explode(":", $track->duration);
-                    $trackCache->duration_seconds = (int)$durationSplit[1] + ((int)$durationSplit[0] * 60);
-                    $trackCache->album_cache_id = $albumCache->id;
-                    $trackCache->save();
-                }
             }
         }
 
-        $toDeleteIds = [];
-        foreach($existingDiscogsIds as $existingDiscogsId) {
-            if(!in_array($existingDiscogsId, $remoteDiscogsIds)) {
-                $toDeleteIds[] = $existingDiscogsId;
-            }
-        }
+        $this->albumCacheRepository->deleteAllNonExistingAlbums($existingDiscogsIds, $remoteDiscogsIds);
+    }
 
-        AlbumCache::whereIn('discogs_id', $toDeleteIds)->delete();
+    public function updateTracksForAlbum(AlbumCache $album)
+    {
+        $resourceResponse =  Http::get($album->discogs_resource_url);
+        $resource = json_decode($resourceResponse->body());
+        foreach ($resource->tracklist as $track) {
+            $trackCache = new TrackCache();
+            $trackCache->position = $track->position;
+            $trackCache->name = $track->title;
+            if (!str_contains($track->duration, ":"))
+                $trackCache->duration_seconds = -1;
+            else {
+                $durationSplit = explode(":", $track->duration);
+                $trackCache->duration_seconds = (int)$durationSplit[1] + ((int)$durationSplit[0] * 60);
+            }
+            $trackCache->album_cache_id = $album->id;
+            $trackCache->save();
+        }
     }
 }

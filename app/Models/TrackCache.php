@@ -9,7 +9,7 @@ class TrackCache extends Model
 {
     use HasFactory;
 
-    protected $table = 'track_cache';
+    protected $table = 'tracks_cache';
 
     public function album()
     {
