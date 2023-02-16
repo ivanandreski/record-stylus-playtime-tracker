@@ -19,12 +19,12 @@ class CreatePlaySessionTracksTable extends Migration
             $table->bigInteger('play_session_id');
             $table->foreign('play_session_id')
                 ->references('id')
-                ->on('play_session')
+                ->on('play_sessions')
                 ->onCascade('delete');
             $table->bigInteger('track_cache_id');
             $table->foreign('track_cache_id')
                 ->references('id')
-                ->on('track_cache')
+                ->on('tracks_cache')
                 ->onCascade('delete');
         });
     }

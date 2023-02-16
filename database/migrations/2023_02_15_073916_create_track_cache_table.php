@@ -13,7 +13,7 @@ class CreateTrackCacheTable extends Migration
      */
     public function up()
     {
-        Schema::create('track_cache', function (Blueprint $table) {
+        Schema::create('tracks_cache', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('position');
@@ -22,7 +22,7 @@ class CreateTrackCacheTable extends Migration
             $table->bigInteger('album_cache_id');
             $table->foreign('album_cache_id')
                 ->references('id')
-                ->on('album_cache')
+                ->on('albums_cache')
                 ->onCascade('delete');
         });
     }
@@ -34,6 +34,6 @@ class CreateTrackCacheTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('track_cache');
+        Schema::dropIfExists('tracks_cache');
     }
 }

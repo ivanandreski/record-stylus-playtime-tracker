@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Livewire\Home::class, '__invoke'])->name('home');
+Route::get('/collection', [App\Http\Livewire\CollectionView::class, '__invoke'])->name('collection-view');
+Route::get('/play-session', [App\Http\Livewire\PlaySessionsView::class, '__invoke'])->name('play-sessions-view');
+Route::get('/play-session/{playSession}', [App\Http\Livewire\PlaySessionDetails::class, '__invoke']);

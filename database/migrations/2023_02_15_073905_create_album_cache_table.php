@@ -13,7 +13,7 @@ class CreateAlbumCacheTable extends Migration
      */
     public function up()
     {
-        Schema::create('album_cache', function (Blueprint $table) {
+        Schema::create('albums_cache', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('discogs_id')->unique();
@@ -33,6 +33,6 @@ class CreateAlbumCacheTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('album_cache');
+        Schema::dropIfExists('albums_cache');
     }
 }
