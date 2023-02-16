@@ -60,6 +60,9 @@ class CreatePlaySession extends Component
         $playSession->playtime_seconds = $playtime;
         $playSession->save();
 
+        $currentStylus->playtime_seconds += $playtime;
+        $currentStylus->save();
+
         return redirect()->route('play-sessions-view');
     }
 
