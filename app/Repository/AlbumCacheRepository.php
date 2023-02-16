@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\AlbumCache;
+use App\Models\TrackCache;
 
 class AlbumCacheRepository implements AlbumCacheRepositoryInterface
 {
@@ -28,6 +29,6 @@ class AlbumCacheRepository implements AlbumCacheRepositoryInterface
 
     public function tracksExistForAlbumCache($albumId): bool
     {
-        return AlbumCache::where('albums_cache_id', '=', $albumId)->count() > 0;
+        return TrackCache::where('album_cache_id', '=', $albumId)->count() > 0;
     }
 }

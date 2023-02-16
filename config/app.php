@@ -199,6 +199,7 @@ return [
          * Custom Service Providers...
          */
         App\Providers\DiscogsRemoteDataSourceServiceProvider::class,
+        App\Providers\AlbumCacheRepositoryServiceProvider::class,
     ],
 
     /*

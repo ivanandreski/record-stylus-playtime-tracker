@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use App\Repository\AlbumCacheRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
+use App\Repository\AlbumCacheRepository;
+use App\Repository\AlbumCacheRepositoryInterface;
 
 class AlbumCacheRepositoryServiceProvider extends ServiceProvider
 {

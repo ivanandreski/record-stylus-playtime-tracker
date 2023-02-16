@@ -3,10 +3,22 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Models\AlbumCache;
+use App\Repository\AlbumCacheRepositoryInterface;
+use App\Repository\DiscogsRemoteDataSourceInterface;
 
 class CreatePlaySession extends Component
 {
-    // TODO: make this a modal that opens when you click on a album in your collection
+    public AlbumCache $album;
+
+    public function mount(
+        AlbumCacheRepositoryInterface $albumCacheRepository,
+        DiscogsRemoteDataSourceInterface $discogsRemoteDataSource
+        ) {
+        if(!$albumCacheRepository->tracksExistForAlbumCache($this->album->id)) {
+            $discogsRemoteDataSource->updateTracksForAlbum($this->album);
+        }
+    }
 
     public function render()
     {

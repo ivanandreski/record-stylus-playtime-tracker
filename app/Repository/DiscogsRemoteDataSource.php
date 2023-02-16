@@ -84,6 +84,7 @@ class DiscogsRemoteDataSource implements DiscogsRemoteDataSourceInterface
 
     public function updateTracksForAlbum(AlbumCache $album)
     {
+        $totalDuration = 0;
         $resourceResponse =  Http::get($album->discogs_resource_url);
         $resource = json_decode($resourceResponse->body());
         foreach ($resource->tracklist as $track) {
@@ -91,13 +92,19 @@ class DiscogsRemoteDataSource implements DiscogsRemoteDataSourceInterface
             $trackCache->position = $track->position;
             $trackCache->name = $track->title;
             if (!str_contains($track->duration, ":"))
-                $trackCache->duration_seconds = -1;
+                $trackCache->duration_seconds = 0;
             else {
                 $durationSplit = explode(":", $track->duration);
                 $trackCache->duration_seconds = (int)$durationSplit[1] + ((int)$durationSplit[0] * 60);
+                $totalDuration += $trackCache->duration_seconds;
             }
             $trackCache->album_cache_id = $album->id;
             $trackCache->save();
         }
+
+        $album->duration_seconds = $totalDuration == 0
+            ? 2400
+            : $totalDuration;
+        $album->save();
     }
 }
