@@ -15,14 +15,16 @@ The app is meant to be hosted on your local network and does not have multi user
 ## Requirements
 
 - PHP >= 8.1
+- Composer 2
 - Node 18
 
 ## How to start the app
 
 1. Clone the repository
-2. Make a database.sqlite file in the database folder
-3. Run composer install in the root directory of the repository
-4. Run npm install in the root directory of the repository
-5. Run php artisan migrate in the root directory of the repository to initialize the database
-6. Run php artisan serve in a terminal window
-7. Run npm run dev in a seperate terminal window
+2. Make a `database.sqlite` file in the database folder
+3. Run `composer install` in the root directory of the repository
+4. Run `npm install` in the root directory of the repository
+5. Run `php artisan migrate` in the root directory of the repository to initialize the database
+6. Run `php artisan serve --host=0.0.0.0` in a terminal window
+7. Run `npm run dev -- --host=0.0.0.0` in a seperate terminal window
+8. The app can now be accessed from any device on your local network using the servers private ip address.
