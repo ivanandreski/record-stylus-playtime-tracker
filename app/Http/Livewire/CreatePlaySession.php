@@ -15,6 +15,7 @@ class CreatePlaySession extends Component
 {
     public AlbumCache $album;
     public $checkedTracks;
+    public $stylusId;
 
     public function mount(
         AlbumCacheRepositoryInterface $albumCacheRepository,
@@ -27,6 +28,8 @@ class CreatePlaySession extends Component
         foreach ($this->album->tracks as $track) {
             $this->checkedTracks[$track->id] = false;
         }
+
+        $this->stylusId = Stylus::where('is_retired', false)->first()->id;
     }
 
     public function handleChangeAllTracksClick($newValue)
@@ -38,7 +41,7 @@ class CreatePlaySession extends Component
 
     public function handleAddPlaySessionClick()
     {
-        $currentStylus = Stylus::where('is_retired', false)->first();
+        $currentStylus = Stylus::find($this->stylusId);
         $playSession = new PlaySession();
         $playSession->stylus_id = $currentStylus->id;
         $playSession->playtime_seconds = 0;
@@ -57,6 +60,10 @@ class CreatePlaySession extends Component
             }
         }
 
+        if($playtime == 0) {
+            $playtime = 40*60;
+        }
+
         $playSession->playtime_seconds = $playtime;
         $playSession->save();
 
@@ -68,8 +75,11 @@ class CreatePlaySession extends Component
 
     public function render()
     {
+        $styluses = Stylus::where('is_retired', false)->get();
+
         return view('livewire.create-play-session', [
-            'stylusExists' => Stylus::where('is_retired', false)->exists(),
+            'styluses' => $styluses,
+            'stylusExists' => count($styluses) > 0,
         ])->layout('layouts.app');
     }
 }
