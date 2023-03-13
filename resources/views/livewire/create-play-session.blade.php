@@ -9,7 +9,7 @@
             <img class="mb-2 w-full rounded-lg" src="{{ $album->image_url }}" />
         </div>
         <div class="flex-initial w-1/2 pl-4">
-            <div>
+            <div class="mb-2">
                 <button type="button" wire:click="handleChangeAllTracksClick(true)"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Full Album
@@ -19,12 +19,14 @@
                     Clear
                 </button>
             </div>
-            <div>
-                <select wire:model="stylusId" class="">
+            <div class="mb-2">
+                <select wire:model="stylusId"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     @foreach ($styluses as $stylus)
-                        <option value="{{ $stylus->id }}">
-                            {{ $stylus->name }} - {{ CarbonInterval::seconds($stylus->playtime_seconds)->cascade()->forHumans(); }}
-                        </option>
+                    <option value="{{ $stylus->id }}">
+                        {{ $stylus->name }} - {{
+                        Carbon\CarbonInterval::seconds($stylus->playtime_seconds)->cascade()->forHumans() }}
+                    </option>
                     @endforeach
                 </select>
             </div>

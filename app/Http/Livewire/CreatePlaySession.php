@@ -60,6 +60,10 @@ class CreatePlaySession extends Component
             }
         }
 
+        if($playtime == 0) {
+            $playtime = 40*60;
+        }
+
         $playSession->playtime_seconds = $playtime;
         $playSession->save();
 

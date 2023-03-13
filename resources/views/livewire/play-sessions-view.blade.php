@@ -1,4 +1,13 @@
 <div class="w-full">
+    <select wire:model="stylusId"
+        class="mb-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+        @foreach ($styluses as $stylus)
+        <option value="{{ $stylus->id }}">
+            {{ $stylus->name }} - {{
+            Carbon\CarbonInterval::seconds($stylus->playtime_seconds)->cascade()->forHumans() }}
+        </option>
+        @endforeach
+    </select>
     <div class="mb-4 relative overflow-x-auto shadow-md border rounded-lg">
         <table class="w-full text-sm text-left text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
