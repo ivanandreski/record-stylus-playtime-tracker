@@ -20,6 +20,15 @@
                 </button>
             </div>
             <div>
+                <select wire:model="stylusId" class="">
+                    @foreach ($styluses as $stylus)
+                        <option value="{{ $stylus->id }}">
+                            {{ $stylus->name }} - {{ CarbonInterval::seconds($stylus->playtime_seconds)->cascade()->forHumans(); }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
                 @foreach ($album->tracks as $track)
                 <label class="block">
                     <span>

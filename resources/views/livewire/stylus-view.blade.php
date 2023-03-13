@@ -16,8 +16,8 @@
     @else
     <div class="flex w-full">
         <div class="flex-initial w-1/2 pr-2 border-r border-black">
-            <h1 class="text-4xl mb-2">Current Stylus</h1>
-            <div class="border-2 border-gray-400 rounded-lg p-2 mb-2">
+            <h1 class="text-4xl mb-2">Active Styluses</h1>
+            {{-- <div class="border-2 border-gray-400 rounded-lg p-2 mb-2">
                 <p>{{ $currentStylus->name }}</p>
                 <p>Playtime: {{ $currentStylus->playtime_seconds }}</p>
             </div>
@@ -26,16 +26,34 @@
                     class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Retire Stylus
                 </button>
-            </div>
+            </div> --}}
+            @foreach ($activeStyluses as $activeStylus)
+            <ul class="mb-2 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+                <li class="w-full px-4 py-2 border-b border-gray-200 rounded-t-lg">Name: {{ $activeStyluses->name }}
+                </li>
+                <li class="w-full px-4 py-2 border-b border-gray-200">Playtime: {{ $activeStyluses->playtime_seconds }}
+                </li>
+                <li class="w-full px-4 py-2 border-b border-gray-200">Play Sessions: {{
+                    count($activeStyluses->playSessions) }}</li>
+                <li class="w-full px-4 py-2 border-gray-200">
+                    <button type="button" wire:click="handleRetireStylusClick({{ $activeStylus->id }})"
+                        class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                        Retire Stylus
+                    </button>
+                </li>
+            </ul>
+            @endforeach
         </div>
         <div class="flex-initial w-1/2 pl-2">
             <h1 class="text-4xl mb-2">Retired Styluses</h1>
             @foreach ($retiredStyluses as $retiredStylus)
             <ul class="mb-2 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
                 <li class="w-full px-4 py-2 border-b border-gray-200 rounded-t-lg">Name: {{ $retiredStylus->name }}</li>
-                <li class="w-full px-4 py-2 border-b border-gray-200">Playtime: {{ $retiredStylus->playtime_seconds }}</li>
+                <li class="w-full px-4 py-2 border-b border-gray-200">Playtime: {{ $retiredStylus->playtime_seconds }}
+                </li>
                 <li class="w-full px-4 py-2 border-b border-gray-200">Retired on: {{ $retiredStylus->updated_at }}</li>
-                <li class="w-full px-4 py-2 border-gray-200">Playsessions: {{ count($retiredStylus->playSessions) }}</li>
+                <li class="w-full px-4 py-2 border-gray-200">Playsessions: {{ count($retiredStylus->playSessions) }}
+                </li>
             </ul>
             @endforeach
         </div>

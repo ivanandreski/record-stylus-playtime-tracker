@@ -20,20 +20,20 @@ class StylusView extends Component
         $this->newStylusName = "";
     }
 
-    public function handleRetireCurrentStylusClick()
+    public function handleRetireStylusClick($stylusId)
     {
-        $currentStylus = Stylus::where('is_retired', false)->first();
+        $currentStylus = Stylus::find($stylusId);
         $currentStylus->is_retired = true;
         $currentStylus->save();
     }
 
     public function render()
     {
-        $currentStylus = Stylus::where('is_retired', false)->first();
+        $activeStyluses = Stylus::where('is_retired', false)->get();
         $retiredStyluses = Stylus::where('is_retired', true)->get();
 
         return view('livewire.stylus-view', [
-            'currentStylus' => $currentStylus,
+            'activeStyluses' => $activeStyluses,
             'retiredStyluses' => $retiredStyluses,
         ])->layout('layouts.app');
     }
