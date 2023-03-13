@@ -18,6 +18,7 @@ class PlaySessionsView extends Component
     public function render()
     {
         $playSessions = PlaySession::where('stylus_id', $this->stylusId)
+            ->orderBy('updated_at', 'desc')
             ->paginate(100);
         $styluses = Stylus::all();
 
